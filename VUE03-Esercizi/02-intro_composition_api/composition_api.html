@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <h1>Inizio con Vue Js 3</h1>
+
+    <div id="app">
+        {{ messaggio }}
+        <br>
+        <button v-on:click="handleChangeA">Cambia stato A</button>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue
+      
+        // Crea la mia applicazione
+        createApp({
+            
+            /**
+            Funzione di installazione del componente che sto sviluppando.
+            Si usa ai fini della Composition API
+            */
+            setup() {
+                // Definizione di una variabile
+                const messaggio = ref("Inizio!" );
+                
+                // Definizione di una funzione (anche di arrow function)
+                const handleChangeA = () => {
+                    // alert("Ciao")
+
+                    // uso di ref per attivare una variabile (mettendo la costante messaggio tra ref(),
+                    // posso cambiarne lo stato)
+                    messaggio.value = "Change status to A";
+                    console.log(messaggio);
+                }
+
+                /** 
+                Ritorno tutte le cose che voglio ritornare dentro un oggetto (anonimo).
+                metto tutto quello che voglio ritornare nel <template>, comprese anche
+                le funzioni che creo
+                */
+                return {
+                    messaggio, // ritorno una variabile/costante
+                    handleChangeA // ritorno una funzione
+                }
+            }    
+
+
+        }).mount('#app') // monto l'applicazione in un tag html con id="app"
+    </script>
+
+</body>
+</html>

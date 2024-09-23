@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06-v-once</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <style>
+        .testoArgomento {
+            color:aqua;
+        }
+
+    </style>
+
+</head>
+<body>
+    <h1>Inizio con Vue Js 3</h1>
+    <h3 class="testoArgomento">v-once</h3>
+    <p><b>Eventi</b> 
+    <b>46:49 </b>
+    </p>
+
+   
+    <div id="app">
+        <div v-once>
+            {{ messaggio }} 
+        </div>
+
+
+       ||| {{ isEdited}}
+        <br>
+        <br>
+
+    
+        <img v-bind:src="immagine" width="50"/>
+        <br>
+        <br>
+        <button @click="handleChangeA">Cambia stato A</button>
+        <br>
+        <br>
+        <button @click="handleChangeB">Cambia stato B</button>
+        <br>
+        <br>
+        <!-- Se la variabile isEdited e' a true visualizzi il bottone, altrimenti no -->
+        <button v-if="isEdited" @click="handleChangeReset">Reset</button>
+        <br>
+        <br>
+       
+        <a href="#" @click="makeParagraphColorGreen">Colora paragrafo di verde</a> |
+        <a href="#" @click="makeParagraphColorRed">Colora paragrafo di rosso</a> |
+        <a href="#" @click="resetParagraphColor">Metti colore paragrafo originale</a>
+        <br>
+        <p :style="coloreParagrafo">Questo e' il paragrafo che sara' colorato</p>
+    
+
+
+        
+    </div>
+
+    <script>
+            
+        /** @TODO: uso del v-if per reindirizzare in maniera condizionata degli elementi all'interno
+            del mio componente
+        */
+        const { createApp, ref, watch } = Vue
+      
+       
+        createApp({
+            
+            setup() {
+
+                // Definizione di variabili
+                const defaultMessage = "Inizio!";
+                const messaggio = ref( defaultMessage );
+                const isEdited = ref( false );
+                const immagine = ref("https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg");
+
+                const defaultColoreParagrafo = "color:blue;"
+                const coloreParagrafo = ref( defaultColoreParagrafo );
+
+                
+
+                // Definizione di una funzioni (anche di arrow function)
+                const handleChangeA = () => {
+                    // uso di ref per attivare una variabile (mettendo la costante messaggio tra ref(),
+                    // posso cambiarne lo stato)
+                    messaggio.value = "Change status to A";
+                    console.log(messaggio);
+                    immagine.value = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/768px-Angular_full_color_logo.svg.png"
+                }
+
+                const handleChangeB = () => {
+
+                    messaggio.value = "Change status to B";
+                    console.log(messaggio);
+                    immagine.value="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/768px-React-icon.svg.png"
+                }
+                
+                /** Riporto gli stati delle variabili al loro valore iniziale */
+                const handleChangeReset = () => {
+                    isEdited.value = false; // necessario, perche' altrimenti
+                    messaggio.value = defaultMessage;
+                    immagine.value = "https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg"; // ripristino lo stato dell'immagine
+                }
+
+                const makeParagraphColorGreen = () => {
+                    coloreParagrafo.value = "color:green;";
+                }
+
+                const makeParagraphColorRed = () => {
+                    coloreParagrafo.value = "color:red;";
+                }
+
+                const resetParagraphColor = () => {
+                    coloreParagrafo.value = defaultColoreParagrafo;
+                }
+
+
+
+                /** TODO: Voglio fare che il mio applicativo si accorga di quando c'e' un cambio di stato
+                    e che quindi ci segnali il fatto che qualcuno l'ha modificato. 
+                    Vengono definiti i watches: andare ad osservare uno stato e capire come cambia nel tempo.
+                */
+                watch (messaggio, (messaggio, prevMessage) => {
+                    // quando succede che lo stato della variabile messaggio viene modificato
+                    // esegui il codice del watch
+                    console.log( `${prevMessage} --> ${messaggio}` );
+                    if(messaggio != defaultMessage)
+                        isEdited.value = true; 
+                });
+
+                /** 
+                Ritorno tutte le cose che voglio ritornare dentro un oggetto (anonimo).
+                metto tutto quello che voglio ritornare nel <template>, comprese anche
+                le funzioni che creo
+                */
+                return {
+                    messaggio, // ritorno una variabile/costante
+                    isEdited,
+                    immagine,
+                    coloreParagrafo,
+                    handleChangeA, // ritorno una funzione
+                    handleChangeB,
+                    handleChangeReset,
+                    makeParagraphColorGreen,
+                    makeParagraphColorRed,
+                    resetParagraphColor
+                    
+                }
+            }    
+
+
+        }).mount('#app') // monto l'applicazione in un tag html con id="app"
+
+    </script>
+
+</body>
+</html>
