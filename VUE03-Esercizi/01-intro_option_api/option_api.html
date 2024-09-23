@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <h1>Inizio con Vue Js</h1>
+
+    <div id="app">
+        {{ messaggio }}
+        <br>
+        {{mioArray}}
+        <br>
+        {{visita}}
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue
+      
+        // Crea la mia applicazione
+        createApp({
+          setup() {
+            return {
+                messaggio : 'Hello vue!',
+                mioArray : ['1', '2', '3'],
+                visita : {
+                    id : 44,
+                    ora : 15,
+                    giorno : "lunedi'",
+                    ambulatorio : "3C"
+                }
+              
+            }
+          }
+        }).mount('#app') // monto l'applicazione in un tag html con id="app"
+      </script>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <style>
+        .testoArgomento {
+            color:aqua;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Inizio con Vue Js 3</h1>
+    <h3 class="testoArgomento">Uso del V-if</h3>
+    <p>Voglio che il pulsante <b>Reset</b> venga visualizzato solo nel momento in cui venga effettuata un'operazione di cambio, ossia solo quando la variabile
+        isEdited diventa true!
+    </p>
+   
+    <div id="app">
+        {{ messaggio }} ||| {{ isEdited}}
+        <br>
+        <br>
+        <!-- Se la variabile isEdited e' a true visualizzi il bottone, altrimenti no -->
+        <button v-if="isEdited" @click="handleChangeReset">Reset</button>
+
+        <!-- Il v-show applica il display:none; del CSS (cioe' nasconde ma a livello di CSS) ==> e' pericoloso, perche' basta disabilitarlo dal dev tool del browser -->
+        <!-- <button v-show="isEdited" @click="handleChangeReset">Reset</button> -->
+        
+        <br>
+        <br>
+        <button @click="handleChangeA">Cambia stato A</button>
+        <br>
+        <br>
+        <button @click="handleChangeB">Cambia stato B</button>
+    </div>
+
+    <script>
+            
+        /** @TODO: uso del v-if per reindirizzare in maniera condizionata degli elementi all'interno
+            del mio componente
+        */
+        const { createApp, ref, watch } = Vue
+      
+       
+        createApp({
+            
+            setup() {
+
+                // Definizione di variabili
+                const defaultMessage = "Inizio!";
+                const messaggio = ref( defaultMessage );
+                const isEdited = ref( false );
+                
+
+                // Definizione di una funzioni (anche di arrow function)
+                const handleChangeA = () => {
+                    // uso di ref per attivare una variabile (mettendo la costante messaggio tra ref(),
+                    // posso cambiarne lo stato)
+                    messaggio.value = "Change status to A";
+                    console.log(messaggio);
+                }
+
+                const handleChangeB = () => {
+
+                    messaggio.value = "Change status to B";
+                    console.log(messaggio);
+                }
+                
+                /** Riporto il testo allo stato iniziale */
+                const handleChangeReset = () => {
+                    isEdited.value = false; // necessario, perche' altrimenti
+                    messaggio.value = defaultMessage;
+                }
+
+
+                /** TODO: Voglio fare che il mio applicativo si accorga di quando c'e' un cambio di stato
+                    e che quindi ci segnali il fatto che qualcuno l'ha modificato. 
+                    Vengono definiti i watches: andare ad osservare uno stato e capire come cambia nel tempo.
+                */
+                watch (messaggio, (messaggio, prevMessage) => {
+                    // quando succede che lo stato della variabile messaggio viene modificato
+                    // esegui il codice del watch
+                    console.log( `${prevMessage} --> ${messaggio}` );
+                    if(messaggio != defaultMessage)
+                        isEdited.value = true; 
+
+                });
+
+                /** 
+                Ritorno tutte le cose che voglio ritornare dentro un oggetto (anonimo).
+                metto tutto quello che voglio ritornare nel <template>, comprese anche
+                le funzioni che creo
+                */
+                return {
+                    messaggio, // ritorno una variabile/costante
+                    isEdited,
+                    handleChangeA, // ritorno una funzione
+                    handleChangeB,
+                    handleChangeReset
+                }
+            }    
+
+
+        }).mount('#app') // monto l'applicazione in un tag html con id="app"
+    </script>
+
+</body>
+</html>
